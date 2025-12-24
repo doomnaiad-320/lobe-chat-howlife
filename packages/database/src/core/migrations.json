@@ -994,5 +994,23 @@
     "bps": true,
     "folderMillis": 1765728439737,
     "hash": "ba6a6beff2ad39419ec4aa7887539c9db0472e13f9242cb8780ff96eec450268"
+  },
+  {
+    "sql": [
+      "CREATE TABLE \"user_balances\" (\n\t\"user_id\" text PRIMARY KEY NOT NULL,\n\t\"balance\" numeric(10, 2) DEFAULT '0' NOT NULL,\n\t\"total_recharged\" numeric(10, 2) DEFAULT '0' NOT NULL,\n\t\"total_used\" numeric(10, 2) DEFAULT '0' NOT NULL,\n\t\"created_at\" timestamp with time zone DEFAULT now() NOT NULL,\n\t\"updated_at\" timestamp with time zone DEFAULT now() NOT NULL\n);\n",
+      "\nALTER TABLE \"user_balances\" ADD CONSTRAINT \"user_balances_user_id_users_id_fk\" FOREIGN KEY (\"user_id\") REFERENCES \"public\".\"users\"(\"id\") ON DELETE cascade ON UPDATE no action;"
+    ],
+    "bps": true,
+    "folderMillis": 1766580696141,
+    "hash": "8f2a89e0ccb06d74fc1bb87b02e3208d901de958be09b7b5c3ea486dcada12aa"
+  },
+  {
+    "sql": [
+      "CREATE TABLE \"balance_logs\" (\n\t\"id\" serial PRIMARY KEY NOT NULL,\n\t\"user_id\" text NOT NULL,\n\t\"type\" varchar(20) NOT NULL,\n\t\"amount\" numeric(10, 4) NOT NULL,\n\t\"balance_before\" numeric(10, 4) NOT NULL,\n\t\"balance_after\" numeric(10, 4) NOT NULL,\n\t\"description\" text,\n\t\"related_request_id\" text,\n\t\"operator_id\" text,\n\t\"created_at\" timestamp with time zone DEFAULT now() NOT NULL\n);\n",
+      "\nALTER TABLE \"balance_logs\" ADD CONSTRAINT \"balance_logs_user_id_users_id_fk\" FOREIGN KEY (\"user_id\") REFERENCES \"public\".\"users\"(\"id\") ON DELETE cascade ON UPDATE no action;"
+    ],
+    "bps": true,
+    "folderMillis": 1766607199778,
+    "hash": "abee940301eb13bd4a1211ff6476cf11b7fedac41b7607771c307c38d83b7959"
   }
 ]

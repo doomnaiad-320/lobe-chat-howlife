@@ -441,6 +441,20 @@
       "when": 1765728439737,
       "tag": "0062_add_more_index",
       "breakpoints": true
+    },
+    {
+      "idx": 63,
+      "version": "7",
+      "when": 1766580696141,
+      "tag": "0063_stormy_rage",
+      "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "7",
+      "when": 1766607199778,
+      "tag": "0064_kind_nekra",
+      "breakpoints": true
     }
   ],
   "version": "6"

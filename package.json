@@ -53,6 +53,7 @@
     "desktop:prepare-dist": "tsx scripts/electronWorkflow/moveNextStandalone.ts",
     "dev": "next dev -p 3010",
     "dev:desktop": "next dev -p 3015",
+    "dev:light": "NODE_OPTIONS='--max-old-space-size=2048' next dev -p 3010 --turbopack",
     "dev:mobile": "next dev -p 3018",
     "docs:i18n": "lobe-i18n md && npm run lint:md && npm run lint:mdx && prettier -c --write locales/**/*",
     "docs:seo": "lobe-seo && npm run lint:mdx",

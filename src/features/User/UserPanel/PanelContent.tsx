@@ -10,6 +10,7 @@ import { isDesktop } from '@/const/version';
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
 
+import BalanceCard from '../BalanceCard';
 import DataStatistics from '../DataStatistics';
 import UserInfo from '../UserInfo';
 import UserLoginOrSignup from '../UserLoginOrSignup';
@@ -42,6 +43,8 @@ const PanelContent = memo<{ closePopover: () => void }>(({ closePopover }) => {
       {isDesktop || isLoginWithAuth ? (
         <>
           <UserInfo avatarProps={{ clickable: false }} />
+
+          <BalanceCard />
 
           <Link style={{ color: 'inherit' }} to={'/profile/stats'}>
             <DataStatistics />

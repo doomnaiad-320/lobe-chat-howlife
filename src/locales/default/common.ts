@@ -29,6 +29,10 @@ export default {
   autoGenerateTooltip: '基于角色设定自动补全助手描述',
   autoGenerateTooltipDisabled: '请填写角色设定后使用自动补全功能',
   back: '返回',
+  balance: {
+    current: '当前余额',
+    unit: '元',
+  },
   batchDelete: '批量删除',
   blog: '产品博客',
   branching: '创建子话题',
@@ -379,6 +383,7 @@ export default {
   },
   userPanel: {
     anonymousNickName: '匿名用户',
+    balance: '我的余额',
     billing: '账单管理',
     cloud: '体验 {{name}}',
     community: '社区版',

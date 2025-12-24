@@ -14,6 +14,7 @@ import {
   LogOut,
   Mail,
   Settings2,
+  Wallet,
 } from 'lucide-react';
 import { PropsWithChildren, memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -78,6 +79,11 @@ export const useMenu = () => {
       icon: <Icon icon={CircleUserRound} />,
       key: 'profile',
       label: <Link to="/profile">{t('userPanel.profile')}</Link>,
+    },
+    {
+      icon: <Icon icon={Wallet} />,
+      key: 'balance',
+      label: <Link to="/profile/balance">{t('userPanel.balance', '我的余额')}</Link>,
     },
   ];
 

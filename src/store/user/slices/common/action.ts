@@ -122,6 +122,7 @@ export const createCommonSlice: StateCreator<
 
             set(
               {
+                balance: data.balance ?? 0,
                 defaultSettings,
                 isOnboard: data.isOnboard,
                 isShowPWAGuide: data.canEnablePWAGuide,

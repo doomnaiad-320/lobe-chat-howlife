@@ -52,6 +52,11 @@ export default {
       required: '内容不得为空',
     },
   },
+  balance: {
+    current: '当前余额',
+    logs: '余额变动记录',
+    noLogs: '暂无余额变动记录',
+  },
   betterAuth: {
     errors: {
       confirmPasswordRequired: '请确认密码',
@@ -269,6 +274,7 @@ export default {
   },
   tab: {
     apikey: 'API Key 管理',
+    balance: '我的余额',
     profile: '个人资料',
     security: '安全',
     stats: '数据统计',

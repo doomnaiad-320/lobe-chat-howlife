@@ -69,6 +69,7 @@ export interface UserPreference {
 
 export interface UserInitializationState {
   avatar?: string;
+  balance?: number;
   canEnablePWAGuide?: boolean;
   canEnableTrace?: boolean;
   email?: string;

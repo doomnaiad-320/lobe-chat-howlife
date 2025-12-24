@@ -1,7 +1,14 @@
 import { Icon } from '@lobehub/ui';
-import { BadgeCentIcon, ChartColumnBigIcon, KeyIcon, ShieldCheck, UserCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import {
+  BadgeCentIcon,
+  ChartColumnBigIcon,
+  KeyIcon,
+  ShieldCheck,
+  UserCircle,
+  Wallet,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import type { MenuProps } from '@/components/Menu';
 import { ProfileTabs } from '@/store/global/initialState';
@@ -57,6 +64,15 @@ export const useCategory = () => {
       label: (
         <Link onClick={(e) => e.preventDefault()} to={'/profile/usage'}>
           {t('tab.usage')}
+        </Link>
+      ),
+    },
+    {
+      icon: <Icon icon={Wallet} />,
+      key: ProfileTabs.Balance,
+      label: (
+        <Link onClick={(e) => e.preventDefault()} to={'/profile/balance'}>
+          {t('tab.balance', '我的余额')}
         </Link>
       ),
     },

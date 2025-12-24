@@ -223,6 +223,10 @@ const MobileProfileStatsPage = dynamic(
     ssr: false,
   },
 );
+const MobileProfileBalancePage = dynamic(() => import('./(main)/profile/balance'), {
+  loading: () => <Loading />,
+  ssr: false,
+});
 const ProfileLayoutMobile = dynamic(() => import('./(main)/profile/_layout/Mobile'), {
   loading: () => <Loading />,
   ssr: false,
@@ -478,6 +482,10 @@ export const createMobileRouter = (locale: Locales) =>
             {
               element: <MobileProfileStatsPage />,
               path: 'stats',
+            },
+            {
+              element: <MobileProfileBalancePage />,
+              path: 'balance',
             },
           ],
           element: <ProfileLayoutMobile />,

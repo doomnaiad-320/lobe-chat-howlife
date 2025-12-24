@@ -1,5 +1,6 @@
 import { UserJSON } from '@clerk/backend';
 import { enableClerk, isDesktop } from '@lobechat/const';
+import { balanceLogs, userBalances } from '@lobechat/database/schemas';
 import {
   NextAuthAccountSchame,
   UserGuideSchema,
@@ -10,6 +11,7 @@ import {
   UserSettingsSchema,
 } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
+import { count, desc, eq } from 'drizzle-orm';
 import { after } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
@@ -47,6 +49,49 @@ const userProcedure = authedProcedure.use(serverDatabase).use(async ({ ctx, next
 });
 
 export const userRouter = router({
+  // 获取用户余额日志
+  getBalanceLogs: userProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+        offset: z.number().min(0).default(0),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, offset } = input;
+
+      const logs = await ctx.serverDB
+        .select({
+          amount: balanceLogs.amount,
+          balanceAfter: balanceLogs.balanceAfter,
+          balanceBefore: balanceLogs.balanceBefore,
+          createdAt: balanceLogs.createdAt,
+          description: balanceLogs.description,
+          id: balanceLogs.id,
+          type: balanceLogs.type,
+        })
+        .from(balanceLogs)
+        .where(eq(balanceLogs.userId, ctx.userId))
+        .orderBy(desc(balanceLogs.createdAt))
+        .limit(limit)
+        .offset(offset);
+
+      const [{ total }] = await ctx.serverDB
+        .select({ total: count() })
+        .from(balanceLogs)
+        .where(eq(balanceLogs.userId, ctx.userId));
+
+      return {
+        items: logs.map((log) => ({
+          ...log,
+          amount: Number(log.amount),
+          balanceAfter: Number(log.balanceAfter),
+          balanceBefore: Number(log.balanceBefore),
+        })),
+        total,
+      };
+    }),
+
   getUserRegistrationDuration: userProcedure.query(async ({ ctx }) => {
     return ctx.userModel.getUserRegistrationDuration();
   }),
@@ -120,14 +165,23 @@ export const userRouter = router({
     }
 
     // Run all count queries in parallel
-    const [hasMoreThan4Messages, hasAnyMessages, hasExtraSession] = await Promise.all([
-      ctx.messageModel.hasMoreThanN(4),
-      ctx.messageModel.hasMoreThanN(0),
-      ctx.sessionModel.hasMoreThanN(1),
-    ]);
+    const [hasMoreThan4Messages, hasAnyMessages, hasExtraSession, balanceResult] =
+      await Promise.all([
+        ctx.messageModel.hasMoreThanN(4),
+        ctx.messageModel.hasMoreThanN(0),
+        ctx.sessionModel.hasMoreThanN(1),
+        ctx.serverDB
+          .select({ balance: userBalances.balance })
+          .from(userBalances)
+          .where(eq(userBalances.userId, ctx.userId))
+          .limit(1),
+      ]);
+
+    const balance = balanceResult[0]?.balance ? Number(balanceResult[0].balance) : 0;
 
     return {
       avatar: state.avatar,
+      balance,
       canEnablePWAGuide: hasMoreThan4Messages,
       canEnableTrace: hasMoreThan4Messages,
       email: state.email,

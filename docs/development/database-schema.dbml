@@ -147,6 +147,19 @@ table async_tasks {
   }
 }
 
+table balance_logs {
+  id serial [pk, not null, increment]
+  user_id text [not null]
+  type varchar(20) [not null]
+  amount "numeric(10, 4)" [not null]
+  balance_before "numeric(10, 4)" [not null]
+  balance_after "numeric(10, 4)" [not null]
+  description text
+  related_request_id text
+  operator_id text
+  created_at "timestamp with time zone" [not null, default: `now()`]
+}
+
 table accounts {
   access_token text
   access_token_expires_at timestamp
@@ -1111,6 +1124,15 @@ table users {
     created_at [name: 'users_created_at_idx']
     created_at [name: 'users_banned_true_created_at_idx']
   }
+}
+
+table user_balances {
+  user_id text [pk, not null]
+  balance "numeric(10, 2)" [not null, default: '0']
+  total_recharged "numeric(10, 2)" [not null, default: '0']
+  total_used "numeric(10, 2)" [not null, default: '0']
+  created_at "timestamp with time zone" [not null, default: `now()`]
+  updated_at "timestamp with time zone" [not null, default: `now()`]
 }
 
 table user_memories {

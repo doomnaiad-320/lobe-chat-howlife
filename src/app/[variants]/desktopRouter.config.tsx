@@ -230,6 +230,10 @@ const DesktopProfileUsagePage = dynamic(
     ssr: false,
   },
 );
+const DesktopProfileBalancePage = dynamic(() => import('./(main)/profile/balance/desktop'), {
+  loading: () => <Loading />,
+  ssr: false,
+});
 const ProfileLayoutWrapper = dynamic(() => import('./(main)/profile/_layout/DesktopWrapper'), {
   loading: () => <Loading />,
   ssr: false,
@@ -470,6 +474,10 @@ export const createDesktopRouter = (locale: Locales) =>
             {
               element: <DesktopProfileUsagePage />,
               path: 'usage',
+            },
+            {
+              element: <DesktopProfileBalancePage />,
+              path: 'balance',
             },
           ],
           element: <ProfileLayoutWrapper />,
