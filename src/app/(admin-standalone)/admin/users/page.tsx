@@ -5,7 +5,6 @@ import {
   Avatar,
   Button,
   Card,
-  ConfigProvider,
   Form,
   Input,
   InputNumber,
@@ -16,50 +15,16 @@ import {
   Table,
   Tag,
   Typography,
-  theme,
 } from 'antd';
 import { createStyles } from 'antd-style';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import {
-  Coins,
-  FileText,
-  LogOut,
-  Minus,
-  Plus,
-  RefreshCw,
-  Search,
-  Settings,
-  Users,
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Coins, Minus, Plus, RefreshCw, Search, Users } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
 const useStyles = createStyles(({ css, token }) => ({
-  container: css`
-    min-height: 100vh;
-    padding: 24px;
-    background: ${token.colorBgLayout};
-  `,
   header: css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     margin-block-end: 24px;
-    padding-block: 16px;
-    padding-inline: 24px;
-    border-radius: ${token.borderRadiusLG}px;
-
-    background: ${token.colorBgContainer};
-  `,
-  headerLeft: css`
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  `,
-  icon: css`
-    color: ${token.colorTextSecondary};
   `,
   statsRow: css`
     display: flex;
@@ -74,6 +39,9 @@ const useStyles = createStyles(({ css, token }) => ({
     display: flex;
     gap: 12px;
     margin-block-end: 16px;
+  `,
+  icon: css`
+    color: ${token.colorTextSecondary};
   `,
 }));
 
@@ -97,9 +65,8 @@ interface BalanceModalState {
   user: UserData | null;
 }
 
-function AdminUsersContent() {
+export default function AdminUsersPage() {
   const { styles } = useStyles();
-  const router = useRouter();
   const { message, modal } = App.useApp();
   const [form] = Form.useForm();
 
@@ -129,38 +96,17 @@ function AdminUsersContent() {
       if (data.success) {
         setUsers(data.data);
         setTotal(data.total);
-      } else if (res.status === 401) {
-        router.push('/admin/login');
       }
     } catch {
       message.error('获取用户列表失败');
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, search, message, router]);
-
-  useEffect(() => {
-    // 检查登录状态
-    fetch('/api/admin/auth')
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.authenticated) {
-          router.push('/admin/login');
-        } else {
-          fetchUsers();
-        }
-      })
-      .catch(() => router.push('/admin/login'));
-  }, []);
+  }, [page, pageSize, search, message]);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
-
-  const handleLogout = async () => {
-    await fetch('/api/admin/auth', { method: 'DELETE' });
-    router.push('/admin/login');
-  };
 
   const handleBalanceSubmit = async (values: { amount: number }) => {
     if (!balanceModal.user) return;
@@ -330,24 +276,10 @@ function AdminUsersContent() {
   const totalUsed = users.reduce((sum, u) => sum + u.totalUsed, 0);
 
   return (
-    <div className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Settings size={24} />
-          <Typography.Title level={4} style={{ margin: 0 }}>
-            用户管理后台
-          </Typography.Title>
-        </div>
-        <Space>
-          <Button icon={<FileText size={14} />} onClick={() => router.push('/admin/logs')}>
-            余额日志
-          </Button>
-          <Button icon={<LogOut size={14} />} onClick={handleLogout}>
-            退出登录
-          </Button>
-        </Space>
-      </div>
+    <div>
+      <Typography.Title className={styles.header} level={4}>
+        用户管理
+      </Typography.Title>
 
       {/* Stats */}
       <div className={styles.statsRow}>
@@ -461,19 +393,5 @@ function AdminUsersContent() {
         </Form>
       </Modal>
     </div>
-  );
-}
-
-export default function AdminUsersPage() {
-  return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-      }}
-    >
-      <App>
-        <AdminUsersContent />
-      </App>
-    </ConfigProvider>
   );
 }

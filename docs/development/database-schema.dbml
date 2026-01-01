@@ -1,3 +1,48 @@
+table admin_model_config {
+  id serial [pk, not null, increment]
+  provider varchar(100) [not null]
+  model_id varchar(200) [not null]
+  display_name varchar(200)
+  description text
+  type varchar(20) [default: 'chat']
+  ability_function_call boolean [default: false]
+  ability_vision boolean [default: false]
+  ability_reasoning boolean [default: false]
+  ability_search boolean [default: false]
+  ability_image_output boolean [default: false]
+  ability_video boolean [default: false]
+  context_window_tokens integer
+  max_output_tokens integer
+  input_price "numeric(20, 10)"
+  output_price "numeric(20, 10)"
+  multiplier "numeric(5, 2)" [default: '1.0']
+  is_custom boolean [default: false]
+  enabled boolean [default: true]
+  sort integer [default: 0]
+  created_at "timestamp with time zone" [not null, default: `now()`]
+  updated_at "timestamp with time zone" [not null, default: `now()`]
+}
+
+table admin_provider_config {
+  id serial [pk, not null, increment]
+  provider varchar(100) [not null, unique]
+  display_name varchar(200)
+  base_url text [not null]
+  api_key_encrypted text [not null]
+  sdk_type varchar(50) [default: 'openai']
+  enabled boolean [default: true]
+  sort integer [default: 0]
+  created_at "timestamp with time zone" [not null, default: `now()`]
+  updated_at "timestamp with time zone" [not null, default: `now()`]
+}
+
+table admin_settings {
+  key varchar(100) [pk, not null]
+  value jsonb [not null]
+  description text
+  updated_at "timestamp with time zone" [not null, default: `now()`]
+}
+
 table agents {
   id text [pk, not null]
   slug varchar(100)

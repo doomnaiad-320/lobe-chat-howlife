@@ -68,7 +68,7 @@ export const evaluateFeatureFlag = (
 export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
   pin_list: false,
 
-  provider_settings: true,
+  provider_settings: false, // Admin controls all AI providers, users cannot configure
 
   openai_api_key: true,
   openai_proxy_url: true,

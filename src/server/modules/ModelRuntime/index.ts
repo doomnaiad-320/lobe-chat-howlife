@@ -171,7 +171,10 @@ const buildVertexOptions = (
 
   const project = projectFromParams || projectFromCredentials || projectFromEnv;
   const location =
-    (params.location as string | undefined) || payload.vertexAIRegion || process.env.VERTEXAI_LOCATION || undefined;
+    (params.location as string | undefined) ||
+    payload.vertexAIRegion ||
+    process.env.VERTEXAI_LOCATION ||
+    undefined;
 
   const googleAuthOptions = params.googleAuthOptions || (credentials ? { credentials } : undefined);
 
@@ -211,5 +214,27 @@ export const initModelRuntimeWithUserPayload = (
   return ModelRuntime.initializeWithProvider(runtimeProvider, {
     ...getParamsFromPayload(runtimeProvider, payload),
     ...params,
+  });
+};
+
+/**
+ * Initializes the agent runtime with admin-configured credentials
+ * Used when admin controls all AI providers and users cannot configure their own
+ * @param provider - The provider name.
+ * @param credentials - Admin credentials containing apiKey, baseUrl, and sdkType
+ * @returns A promise that resolves when the agent runtime is initialized.
+ */
+export const initModelRuntimeWithAdminCredentials = (
+  provider: string,
+  credentials: { apiKey: string; baseUrl: string; sdkType?: string | null },
+) => {
+  // Use sdkType if provided, otherwise fall back to provider name
+  // sdkType determines which SDK/runtime to use for the request
+  // e.g., 'router' for NewAPI format, 'openai' for OpenAI-compatible APIs
+  const runtimeProvider = credentials.sdkType || provider;
+
+  return ModelRuntime.initializeWithProvider(runtimeProvider, {
+    apiKey: credentials.apiKey,
+    baseURL: credentials.baseUrl,
   });
 };

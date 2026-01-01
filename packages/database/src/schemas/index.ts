@@ -1,3 +1,4 @@
+export * from './adminConfig';
 export * from './agent';
 export * from './aiInfra';
 export * from './apiKey';

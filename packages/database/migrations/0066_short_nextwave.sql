@@ -1,0 +1,1 @@
+ALTER TABLE "admin_provider_config" ADD COLUMN "sdk_type" varchar(50) DEFAULT 'openai';

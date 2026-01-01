@@ -455,6 +455,20 @@
       "when": 1766607199778,
       "tag": "0064_kind_nekra",
       "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1766662633319,
+      "tag": "0065_lying_king_cobra",
+      "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "7",
+      "when": 1766765667648,
+      "tag": "0066_short_nextwave",
+      "breakpoints": true
     }
   ],
   "version": "6"
